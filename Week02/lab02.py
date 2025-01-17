@@ -32,5 +32,5 @@ def main():
         print(f"Error {e}")
 
 # Run the game
-if __name__ == "main":
+if __name__ == "__main__":
     main()
