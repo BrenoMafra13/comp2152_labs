@@ -209,22 +209,22 @@ while m_health_points > 0 and health_points > 0:
 
         if belt:
             used_item = belt.pop(0)  # Remove and store the first item
-            print(f"You use: {used_item}")
+            print("You use: " + used_item)
 
             # Check if the item is good or bad and adjust health accordingly
             if used_item in good_loot_options:
                 health_points = min(max_health_points, health_points + 2)  # Increase health but not over max
-                print(f"The {used_item} boosts your health to {health_points}.")
+                print("The " + used_item + " boosts your health to " + str(health_points))
             elif used_item in bad_loot_options:
                 health_points = max(0, health_points - 2)  # Decrease health but not below 0
-                print(f"The {used_item} harms you, reducing your health to {health_points}.")
+                print("The " + used_item + " boosts your health to " + str(health_points))
             else:
-                print("The item was not helpful in this situation.")
+                print("The item was not helpful.")
 
             # Display the player's updated health points
-            print(f"Your current health points: {health_points}")
+            print("Your current health points: " + str(health_points))
         else:
-            print("Your belt is empty! You have no items to use.")
+            print("Your belt is empty.")
     else:
         input("The monster strikes (Press Enter)")
         health_points = monster_attacks(m_combat_strength, health_points)
@@ -234,4 +234,4 @@ while m_health_points > 0 and health_points > 0:
             num_stars = 2
 
 stars = "*" * num_stars
-print("Hero gets <" + stars + "> stars")
+print("Hero gets < " + stars + " > stars")
