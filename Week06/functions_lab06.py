@@ -1,8 +1,8 @@
 # Import the random library to use for the dice later
 import random
 
-# Will the line below print when you import function.py into main.py?
-# print("Inside function.py")
+# Will the line below print when you import functions_lab10.py into main.py?
+# print("Inside functions_lab10.py")
 
 
 # Lab 4: Question 4

@@ -1,13 +1,10 @@
 # Import the random library to use for the dice later
 import random
 
-# test
-
 # Will the line below print when you import functions_lab10.py into main.py?
 # print("Inside functions_lab10.py")
 
 
-# Lab 5: Question 4
 def use_loot(belt, health_points):
     good_loot_options = ["Health Potion", "Leather Boots"]
     bad_loot_options = ["Poison Potion"]
@@ -16,16 +13,15 @@ def use_loot(belt, health_points):
     first_item = belt.pop(0)
     if first_item in good_loot_options:
         health_points = min(20, (health_points + 2))
-        print("    |    You used " + first_item +" to up your health to " + str(health_points))
+        print("    |    You used " + first_item + " to up your health to " + str(health_points))
     elif first_item in bad_loot_options:
-        health_points = max(20, (health_points - 2))
+        health_points = max(0, (health_points - 2))
         print("    |    You used " + first_item + " to hurt your health to " + str(health_points))
     else:
         print("    |    You used " + first_item + " but it's not helpful")
     return belt, health_points
 
 
-# Lab 5: Question 3
 def collect_loot(loot_options, belt):
     ascii_image3 = """
                       @@@ @@                
@@ -42,13 +38,12 @@ def collect_loot(loot_options, belt):
           @                  @@         
               @@@@@@@@@@@@          
               """
-    # 2GHF
     print(ascii_image3)
     loot_roll = random.choice(range(1, len(loot_options) + 1))
     loot = loot_options.pop(loot_roll - 1)
     belt.append(loot)
+    print("    |    Your belt: ", belt)
     return loot_options, belt
-
 
 
 # Hero's Attack Function
@@ -117,13 +112,12 @@ def monster_attacks(m_combat_strength, health_points):
         print("    |    The monster has reduced Player's health to: " + str(health_points))
     return health_points
 
-# Lab 5: Question 7
 # Recursion
 # You can choose to go crazy, but it will reduce your health points by 5
-def inception_dream(num__dream_lvls):
-    num__dream_lvls = int(num__dream_lvls)
+def inception_dream(num_dream_lvls):
+    num_dream_lvls = int(num_dream_lvls)
     # Base Case
-    if num__dream_lvls == 1:
+    if num_dream_lvls == 1:
         print("    |    You are in the deepest dream level now")
         print("    |", end="    ")
         input("Start to go back to real life? (Press Enter)")
@@ -138,4 +132,63 @@ def inception_dream(num__dream_lvls):
         # 1 + 1 + 1 + inception_dream(2)
         # 1 + 1 + 1 + 1 + inception_dream(1)
         # 1 + 1 + 1 + 1 + 2
-        return 1 + int(inception_dream(num__dream_lvls - 1))
+        return 1 + int(inception_dream(num_dream_lvls - 1))
+
+
+# Lab 06 - Question 3 and 4
+def save_game(winner, hero_name="", num_stars=0):
+    last_game_state, last_monsters_count = load_game()
+    new_total_monsters_killed = last_monsters_count
+    with open("save.txt", "a") as file:
+        if winner == "Hero":
+            new_total_monsters_killed += 1
+            file.write(f"Hero {hero_name} has killed a monster and gained {num_stars} stars.\n")
+        elif winner == "Monster":
+            file.write("Monster has killed the hero.\n")
+        file.write(f"Total monsters killed: {new_total_monsters_killed}\n")
+
+# Lab 06 - Question 5a
+def load_game():
+    try:
+        with open("save.txt", "r") as file:
+            print("Loading from saved file")
+            last_monsters_count = 0
+            last_game_state = ""
+            for line in file:
+                if line.startswith("Total monsters killed"):
+                    last_monsters_count = int(line.strip().split(":")[1].strip())
+                elif line.strip():
+                    last_game_state = line.strip()
+            print(f"Total monsters killed: {last_monsters_count}")
+            return last_game_state, last_monsters_count
+    except FileNotFoundError:
+        print("No previous game found, starting first game")
+        return "", 0
+
+# Lab 06 - Question 5b
+def adjust_combat_strength(combat_strength, m_combat_strength):
+    last_game_state, total_monsters_killed = load_game()
+    if last_game_state:
+        if "Hero" in last_game_state and "gained" in last_game_state:
+            num_stars = int(last_game_state.split()[-2])
+            if num_stars > 3:
+                print("    |    ... Increasing the monster's combat strength since you won so easily last time")
+                m_combat_strength += 1
+        elif "Monster has killed the hero" in last_game_state:
+            combat_strength += 1
+            print("    |    ... Increasing the hero's combat strength since you lost last time")
+        else:
+            print("    |    ... Based on your previous game, neither the hero nor the monster's combat strength will be increased")
+    return combat_strength, m_combat_strength
+
+def dream_level():
+    while True:
+        user_input = input("Quantity of dream levels to go down? (Enter 0 to 3): ")
+        try:
+            dream_lvls = int(user_input)
+            if 0 <= dream_lvls <= 3:
+                return dream_lvls
+            else:
+                print("Enter a number between 0 and 3.")
+        except ValueError:
+            print("Enter a valid integer.")
