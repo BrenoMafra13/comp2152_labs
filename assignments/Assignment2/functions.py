@@ -139,7 +139,7 @@ def inception_dream(num_dream_lvls):
 def save_game(winner, hero_name="", num_stars=0):
     last_game_state, last_monsters_count = load_game()
     new_total_monsters_killed = last_monsters_count
-    with open("save.txt", "a") as file:
+    with open("../study-GBC/comp2152/COMP2152_Winter25/assignments/Assignment2/save.txt", "a") as file:
         if winner == "Hero":
             new_total_monsters_killed += 1
             file.write(f"Hero {hero_name} has killed a monster and gained {num_stars} stars.\n")
@@ -150,7 +150,7 @@ def save_game(winner, hero_name="", num_stars=0):
 # Lab 06 - Question 5a
 def load_game():
     try:
-        with open("save.txt", "r") as file:
+        with open("../study-GBC/comp2152/COMP2152_Winter25/assignments/Assignment2/save.txt", "r") as file:
             print("Loading from saved file")
             last_monsters_count = 0
             last_game_state = ""
